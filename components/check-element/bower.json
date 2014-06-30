@@ -1,0 +1,9 @@
+{
+  "name": "check-element",
+  "version": "0.0.0",
+  "keywords": "seed, polymer, web-components",
+  "main": "check-element.html",
+  "dependencies": {
+    "polymer": "Polymer/polymer#~0.3.1"
+  }
+}

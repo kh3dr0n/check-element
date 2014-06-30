@@ -1,0 +1,19 @@
+{
+  "name": "check-element",
+  "keywords": "seed, polymer, web-components",
+  "main": "check-element.html",
+  "dependencies": {
+    "polymer": "Polymer/polymer#~0.3.1"
+  },
+  "homepage": "https://github.com/kh3dr0n/check-element",
+  "_release": "d3d8c2729c",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "d3d8c2729c861667346853484646b6999479ae83"
+  },
+  "_source": "git://github.com/kh3dr0n/check-element.git",
+  "_target": "master",
+  "_originalSource": "kh3dr0n/check-element",
+  "_direct": true
+}

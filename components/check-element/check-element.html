@@ -1,0 +1,173 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+Element providing solution to no problem in particular.
+
+##### Example
+
+    <check-element></check-element>
+
+@element check-element
+@blurb Element providing solution to no problem in particular.
+@status alpha
+@homepage http://kh3dr0n.github.io/check-element
+-->
+<polymer-element name="check-element" attributes="notitle">
+
+    <template>
+
+        <link rel="stylesheet" href="check-element.css" />
+        <content>
+        <input name="check" type="checkbox">
+        <label for="check">{{name}}</label>
+        </content>
+    </template>
+
+    <script>
+    Polymer('check-element', {
+        /**
+         * The `noevent` event is not actually fired from here,
+         * we document it as an example of documenting events.
+         *
+         * @event noevent
+         */
+
+        /**
+         * The `notitle` attribute does not yet have a purpose.
+         *
+         * @attribute notitle
+         * @type string
+         */
+        notitle: '',
+
+        /**
+         * The `aProp` is a property that does something cool.
+         *
+         * @property aProp
+         * @type bool
+         */
+        aProp: false,
+
+        ready: function() {
+
+          this.name = this.innerHTML;
+          this.innerHTML = "";
+
+  if (document.createElement('svg').getAttributeNS) {
+
+                var ch = this.shadowRoot.querySelector('input'),
+                  label = this.shadowRoot.querySelector('label'),
+                    pathDefs = {
+                        cross: ['M 10 10 L 90 90', 'M 90 10 L 10 90']
+                    },
+                    animDefs = {
+                        cross: {
+                            speed: .2,
+                            easing: 'ease-in-out'
+                        }
+                    };
+
+                function createSVGEl(def) {
+                    var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                    if (def) {
+                        svg.setAttributeNS(null, 'viewBox', def.viewBox);
+                        svg.setAttributeNS(null, 'preserveAspectRatio', def.preserveAspectRatio);
+                    } else {
+                        svg.setAttributeNS(null, 'viewBox', '0 0 100 100');
+                    }
+                    svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+                    return svg;
+                }
+
+                function controlCheckbox(el, type, svgDef) {
+                    var svg = createSVGEl(svgDef);
+                    el.parentNode.appendChild(svg);
+
+                    el.addEventListener('change', function() {
+                        if (el.checked) {
+                            draw(el, type);
+                        } else {
+                            reset(el);
+                        }
+                    });
+                }
+
+
+
+                controlCheckbox(ch, 'cross');
+
+                function draw(el, type) {
+                    var paths = [],
+                        pathDef,
+                        animDef,
+                        svg = el.parentNode.querySelector('svg');
+
+                    switch (type) {
+                        case 'cross':
+                            pathDef = pathDefs.cross;
+                            animDef = animDefs.cross;
+                            break;
+                    };
+
+                    paths.push(document.createElementNS('http://www.w3.org/2000/svg', 'path'));
+
+                    if (type === 'cross' || type === 'list') {
+                        paths.push(document.createElementNS('http://www.w3.org/2000/svg', 'path'));
+                    }
+
+                    for (var i = 0, len = paths.length; i < len; ++i) {
+                        var path = paths[i];
+                        svg.appendChild(path);
+
+                        path.setAttributeNS(null, 'd', pathDef[i]);
+
+                        var length = path.getTotalLength();
+                        // Clear any previous transition
+                        //path.style.transition = path.style.WebkitTransition = path.style.MozTransition = 'none';
+                        // Set up the starting positions
+                        path.style.strokeDasharray = length + ' ' + length;
+                        if (i === 0) {
+                            path.style.strokeDashoffset = Math.floor(length) - 1;
+                        } else path.style.strokeDashoffset = length;
+                        // Trigger a layout so styles are calculated & the browser
+                        // picks up the starting position before animating
+                        path.getBoundingClientRect();
+                        // Define our transition
+                        path.style.transition = path.style.WebkitTransition = path.style.MozTransition = 'stroke-dashoffset ' + animDef.speed + 's ' + animDef.easing + ' ' + i * animDef.speed + 's';
+                        // Go!
+                        path.style.strokeDashoffset = '0';
+                    }
+                }
+
+                function reset(el) {
+                    Array.prototype.slice.call(el.parentNode.querySelectorAll('svg > path')).forEach(function(el) {
+                        el.parentNode.removeChild(el);
+                    });
+                }
+
+
+  label.addEventListener('click', function  () {
+              ch.click();
+            });
+
+
+            }
+
+        },
+
+        /**
+         * The `task` method does no work at this time.
+         *
+         * @method task
+         * @return {Object} Returns undefined.
+         * @param {String} dummy Serves no purpose today.
+         */
+
+        checked: function  () {
+          return this.shadowRoot.querySelector('input').checked;
+        }
+
+    });
+    </script>
+
+</polymer-element>
